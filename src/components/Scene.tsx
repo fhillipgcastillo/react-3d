@@ -1,7 +1,6 @@
 import React, { createRef, LegacyRef, useEffect, useRef } from 'react'
 import * as THREE from 'three';
 
-
 type Props = {
 
 }
@@ -9,16 +8,12 @@ type Props = {
 const Scene = (props: Props): React.ReactElement => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-
   useEffect(() => {
-
-    console.log("fist render")
-    // === THREE.JS CODE START ===
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(75, (containerRef.current?.offsetWidth || 1) / (containerRef.current?.offsetHeight || 1), 0.1, 1000);
 
     const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(containerRef.current?.offsetWidth || 0, containerRef.current?.offsetHeight || 0);
     containerRef.current?.appendChild(renderer.domElement);
 
     const geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -39,13 +34,21 @@ const Scene = (props: Props): React.ReactElement => {
 
     animate();
     return () => { containerRef.current?.removeChild(renderer.domElement) };
-  }, [containerRef]);
+  }, [containerRef.current]);
 
   return (
-    <div ref={containerRef} />
+    <div className='canvasContainer' style={{
+      flex: 1,
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+    }}>
+      <div ref={containerRef} style={{
+        flex: 1,
+        flexWrap: "wrap",
+      }} />
+    </div >
   )
 }
-
-Scene.propTypes = {}
 
 export default Scene;
