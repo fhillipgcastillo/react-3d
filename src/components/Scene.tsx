@@ -44,6 +44,7 @@ const Scene = (props: Props): React.ReactElement => {
     const cubeMaterial = new THREE.MeshPhongMaterial({ color: 0xFFAD00 });
     const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
     cube.position.set(0, 0, 1)
+    cube.rotation.y = 0.01;
     scene.add(cube);
 
     camera.position.z = 5;
@@ -52,7 +53,8 @@ const Scene = (props: Props): React.ReactElement => {
     const light = new THREE.DirectionalLight(0xFFFFFF, 1);
     light.position.set(1, 3, 2)
     scene.add(light);
-    
+    const ambientLight = new THREE.AmbientLight(0xFFFFFFF, 0.2);
+    scene.add(ambientLight);
 
     animate();
     return () => { containerRef.current?.removeChild(renderer.domElement) };
